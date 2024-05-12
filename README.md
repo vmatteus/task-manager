@@ -10,7 +10,7 @@ This project use laravel sail. [Please read this](https://laravel.com/docs/11.x/
 
 For the setup, fallow the steps  
 
-1. Clone this repository 
+1. Clone this repository: 
     ```
    $ git clone git@github.com:vmatteus/task-manager.git && cd task-manager
    ```
@@ -30,9 +30,20 @@ For the setup, fallow the steps
     ```
     This command run composer install and generate the vendors requirements.
 
-4. After the Composer installation, run the up command 
+4. After the Composer installation, run the up command: 
     ```
    $ ./vendor/bin/sail up -d
    ```
-5. Run the migrations command: `./vendor/bin/sail php artisan migrate`
-6. The project is ready to access. https://localhost:8080 (this port is APP_PORT env).
+5. Run the migrations command: 
+    ```
+   $ ./vendor/bin/sail php artisan migrate
+   ```
+6. Install the modules from vue:
+   ```
+   ./vendor/bin/sail npm install
+   ```
+7. Run the vue client:
+    ```
+   ./vendor/bin/sail npm rum dev
+   ```
+8. The project is ready to access. https://localhost:8080 (this port is APP_PORT env).
