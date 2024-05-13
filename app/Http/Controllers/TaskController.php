@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Domain\HttpCode;
+use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Http\Responses\ApiErrorResponse;
 use App\Http\Responses\ApiResponse;
-use App\Models\Task;
 use App\Services\Task\TaskService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -31,11 +35,30 @@ class TaskController extends Controller
     public function all(): ApiResponse|ApiErrorResponse
     {
         try {
-            return new ApiResponse(
-                $this->taskService->all(),
-            );
-        } catch (\Exception $exception) {
+            return new ApiResponse([
+                'tasks' => TaskResource::collection($this->taskService->all()),
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
             return new ApiErrorResponse();
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return ApiResponse|ApiErrorResponse
+     */
+    public function get(int $id): ApiResponse|ApiErrorResponse
+    {
+        try {
+            return new ApiResponse([
+                'task' => new TaskResource($this->taskService->get($id))
+            ]);
+        } catch (ModelNotFoundException $exception) {
+            return new ApiErrorResponse('Task not found.', HttpCode::NOT_FOUND);
+        } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            return new ApiErrorResponse;
         }
     }
 
@@ -43,15 +66,20 @@ class TaskController extends Controller
      * @param Request $request
      * @return ApiResponse|ApiErrorResponse
      */
-    public function create(Request $request): ApiResponse|ApiErrorResponse
+    public function create(CreateTaskRequest $request): ApiResponse|ApiErrorResponse
     {
         try {
-            return new ApiResponse(
-                [],
+            $task = $this->taskService->create($request->validated());
+            return new ApiResponse([
+                    'task' => [
+                        'id' => $task->id
+                    ]
+                ],
                 HttpCode::CREATED
             );
-        } catch (\Exception $exception) {
-            return new ApiErrorResponse();
+        } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            return new ApiErrorResponse;
         }
     }
 
@@ -60,14 +88,22 @@ class TaskController extends Controller
      * @param Request $request
      * @return ApiResponse|ApiErrorResponse
      */
-    public function update(int $id, Request $request): ApiResponse|ApiErrorResponse
+    public function update(int $id, UpdateTaskRequest $request): ApiResponse|ApiErrorResponse
     {
         try {
-            return new ApiResponse(
-                $this->taskService->all(),
+            $this->taskService->update($id, $request->validated());
+            return new ApiResponse([
+                    'task' => [
+                        'id' => $id
+                    ]
+                ],
+                HttpCode::OK
             );
-        } catch (\Exception $exception) {
-            return new ApiErrorResponse();
+        } catch (ModelNotFoundException $exception) {
+            return new ApiErrorResponse('Task not found.', HttpCode::NOT_FOUND);
+        } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            return new ApiErrorResponse;
         }
     }
 
@@ -78,11 +114,18 @@ class TaskController extends Controller
     public function delete(int $id): ApiResponse|ApiErrorResponse
     {
         try {
+            $this->taskService->delete($id);
             return new ApiResponse(
-                $this->taskService->all(),
+                [
+                    'message' => 'Task deleted successfully'
+                ],
+                HttpCode::OK
             );
-        } catch (\Exception $exception) {
-            return new ApiErrorResponse();
+        } catch (ModelNotFoundException $exception) {
+            return new ApiErrorResponse('Task not found.', HttpCode::NOT_FOUND);
+        } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            return new ApiErrorResponse;
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services\Task;
 
 use App\Models\Task;
+use \Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class TaskService
@@ -10,8 +11,14 @@ use App\Models\Task;
 class TaskService
 {
 
+    /**
+     * @var Task
+     */
     protected Task $model;
 
+    /**
+     * @param Task $model
+     */
     public function __construct(Task $model)
     {
         $this->model = $model;
@@ -21,9 +28,9 @@ class TaskService
      * return all tasks
      * @return array
      */
-    public function all(): array
+    public function all(): Collection
     {
-        return $this->model->all()->toArray();
+        return $this->model->all();
     }
 
     /**
@@ -31,8 +38,36 @@ class TaskService
      * @param $id
      * @return mixed
      */
-    public function get($id): Task
+    public function get(int $id): Task
     {
         return $this->model->where('id', $id)->firstOrFail();
+    }
+
+    /**
+     * @param array $data
+     * @return Task
+     */
+    public function create(array $data): Task
+    {
+        return $this->model->create($data);
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
+    public function update(int $id, array $data): bool
+    {
+        return $this->get($id)->update($data);
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool
+    {
+        return $this->get($id)->delete();
     }
 }
