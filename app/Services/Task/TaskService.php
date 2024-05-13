@@ -3,25 +3,20 @@
 namespace App\Services\Task;
 
 use App\Models\Task;
+use App\Services\BaseService;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
  * Class TaskService
  */
-class TaskService
+class TaskService extends BaseService
 {
-
-    /**
-     * @var Task
-     */
-    protected Task $model;
-
     /**
      * @param Task $model
      */
     public function __construct(Task $model)
     {
-        $this->model = $model;
+        parent::__construct($model);
     }
 
     /**
