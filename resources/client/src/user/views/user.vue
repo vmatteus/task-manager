@@ -1,43 +1,79 @@
-<script setup>
-    import { useStore } from 'vuex';
+<script lang="ts" setup>
+    import { useStore } from 'vuex'
+    import { reactive, ref } from 'vue'
+    import { FormInstance, FormRules } from 'element-plus'
+    import { useRouter } from 'vue-router';
 
+    const ruleFormRef = ref<FormInstance>()
     const store = useStore()
+    const router = useRouter();
 
-    const user = defineModel('user', {
-        default: {
-            'name': '',
-            'email': ''
-        }
+    const userForm = reactive({
+        name: null,
+        email: null
     })
 
-    const createUser = () => {
-        store.dispatch('User/create', user.value)
+    const createUser = (fields) => {
+        store.dispatch('User/create', fields)
+    }
+
+    const submitForm = (formEl: FormInstance | undefined) => {
+        if (!formEl) return
+        formEl.validate((valid) => {
+            if (valid) {
+                createUser(userForm)
+                router.push('/task')
+            }
+        })
     }
 
 </script>
 
 <template>
+    <h1 class="text-3xl font-bold text-center pt-8">User register</h1>
     <div class="container mx-auto py-8">
-        <form @submit.prevent="createUser" class="w-full max-w-lg">
-            <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                        Name
-                    </label>
-                    <input v-model="user.name" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe">
-                </div>
-                <div class="w-full md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                        Email
-                    </label>
-                    <input v-model="user.email" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe">
-                </div>
-            </div>
-            <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Create User
-                </button>
-            </div>
-        </form>
+        <el-form
+            ref="ruleFormRef"
+            style="max-width: 600px"
+            :model="userForm"
+            status-icon
+            label-width="auto"
+            class="demo-ruleForm"
+        >
+            <el-form-item
+                :rules="{
+                    required: true,
+                    message: 'Please input name',
+                    trigger: 'blur',
+                }"
+                label="Name"
+                prop="name"
+            >
+                <el-input
+                    v-model="userForm.name"
+                    type="text"
+                    autocomplete="off"
+                />
+            </el-form-item>
+            <el-form-item
+                :rules="[
+                    {
+                    required: true,
+                    message: 'Please input email address',
+                    trigger: 'blur',
+                    },
+                    {
+                    type: 'email',
+                    message: 'Please input correct email address',
+                    trigger: ['blur', 'change'],
+                    },
+                ]"
+                label="Email" prop="email">
+                <el-input v-model="userForm.email" type="text" autocomplete="off" :rules="{required: true}" />
+            </el-form-item>
+            <el-button type="primary" @click="submitForm(ruleFormRef)">
+                Submit
+            </el-button>
+        </el-form>
     </div>
 </template>

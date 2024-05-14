@@ -15,6 +15,11 @@ export default {
                     email: user.email,
                 })
                 commit('SET_USER_LOADED', true);
+                ElNotification({
+                    title: 'Success',
+                    message: 'User created',
+                    type: 'success',
+                })
             })
     },
     load: async ({ commit }) => {

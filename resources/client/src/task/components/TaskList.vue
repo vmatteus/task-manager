@@ -1,4 +1,5 @@
 <script setup>
+
     import { onMounted } from 'vue';
     import { useStore } from 'vuex';
     import TaskAdd from '../components/TaskAdd.vue';

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { utils } from '../../../utils';
 
 const API_URL = 'http://localhost:8080';
 
@@ -11,6 +12,20 @@ export default {
             })
             .then(() => {
                 dispatch('load');
+                ElNotification({
+                    title: 'Success',
+                    message: 'Task created!',
+                    type: 'success',
+                })
+            }).catch((msg) => {
+
+                const { flattenJSON } = utils()
+
+                ElNotification({
+                    title: 'Error',
+                    message: flattenJSON(msg.response.data.errors),
+                    type: 'error',
+                })
             })
     },
     load: async ({ commit }) => {

@@ -1,10 +1,15 @@
 import {createApp} from 'vue'
-import store from '../client/store'
+import store from '../client/src/store'
 import App from '../client/src/app.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import router from '../client/src/router'
+import ElementPlus from 'element-plus'
 
-const app = createApp(App)
-app.use(VueAxios, axios)
-app.use(store)
-app.mount("#app")
+
+createApp(App).
+    use(router).
+    use(store).
+    use(ElementPlus).
+    use(VueAxios, axios).
+    mount('#app');
