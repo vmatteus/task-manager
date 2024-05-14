@@ -2,8 +2,6 @@
 
 This is my task manager 
 
-[Specifics find here](https://github.com/dbspt/phptest)
-
 ## Setup
 
 This project use laravel sail. [Please read this](https://laravel.com/docs/11.x/sail).
