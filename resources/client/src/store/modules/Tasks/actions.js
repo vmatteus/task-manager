@@ -41,6 +41,11 @@ export default {
             .delete(API_URL + '/api/task/' + id)
             .then(() => {
                 dispatch('load');
+                ElNotification({
+                    title: 'Success',
+                    message: 'Task ' + id + ' deleted!',
+                    type: 'success',
+                })
             })
     },
 
