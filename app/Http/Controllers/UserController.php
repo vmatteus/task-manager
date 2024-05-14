@@ -13,18 +13,27 @@ use Illuminate\Support\Facades\Log;
 class UserController extends Controller
 {
 
+    /**
+     * @var UserService
+     */
     protected $userService;
+
+    /**
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
 
+    /**
+     * @param FindOrCreateRequest $request
+     * @return ApiErrorResponse|ApiResponse
+     */
     public function findOrCreateUser(FindOrCreateRequest $request)
     {
         try {
-
             $data = $this->userService->findOrCreate($request->validated());
-
             return new ApiResponse(
                 [
                     'user' => new UserResource($data['user']),

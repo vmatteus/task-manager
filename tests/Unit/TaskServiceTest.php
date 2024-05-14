@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Models\Task;
-use App\Models\User;
 use App\Services\Task\TaskService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Tests\TestCase;
@@ -17,16 +16,13 @@ class TaskServiceTest extends TestCase
     {
         parent::setUp();
         $this->taskService = app(TaskService::class);
-        $this->task = Task::factory()->make();
-        $this->task->save();
+        $this->task = Task::factory()->create();
     }
 
     public function test_all_method(): void
     {
-        $task1 = Task::factory()->make();
-        $task1->save();
-        $task2 = Task::factory()->make();
-        $task2->save();
+        $task1 = Task::factory()->create();
+        $task2 = Task::factory()->create();
         $allTasks = $this->taskService->all();
         $this->assertCount(3, $allTasks);
     }

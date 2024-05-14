@@ -1,16 +1,10 @@
 <script setup>
-    import { ref } from 'vue';
+    import { onMounted } from 'vue';
+    import { useStore } from 'vuex';
     import TaskAdd from '../components/TaskAdd.vue';
+    import TaskItem from '../components/TaskItem.vue';
 
-    const componentKey = ref(0);
-
-    const forceRerender = () => {
-        componentKey.value += 1;
-    };
-
-    const tasks = defineModel({
-        default: ['teste', 'teste2']
-    })
+    const store = useStore()
 
     const assigns = defineModel('assings',
         {
@@ -19,49 +13,28 @@
     )
 
     const addTask = (task) => {
-        tasks.value.push(task.value);
-        forceRerender();
+        store.dispatch('Tasks/create', task)
     }
 
-    const removeTask = (index) => {
-        tasks.value.splice(index, 1);
-        forceRerender();
-    }
-
-    const assignToMe = (index) => {
-        assigns.value.push({
-            task: index,
-            user: 'Vini'
-        })
-        forceRerender();
-    }
-
-    const isAssign = (index) => {
-        const task = assigns.value.map(element => {
-            if (element.task == index ) {
-                return element;
-            }
-        });
-        return !task.length === 0;
-    }
+    onMounted(async() => {
+        try {
+            store.dispatch('Tasks/load')
+        } catch(e) {
+            console.log(e)
+        }
+    });
 
 </script>
 
 <template>
     <ul class="divide-y divide-gray-200">
         <TaskAdd
-            :key="componentKey"
-            tasks="tasks"
             @update:tasks="addTask = $event"
             @addTask="addTask"
         />
-        <li v-for="(task, index) in tasks" :key="index" class="py-4 flex items-center justify-between">
-            <span class="flex-1">{{ task }}</span>
-            <button v-if="!isAssign(index)" @click="assignToMe(index)"
-                    class="text-sm px-4 py-1 rounded-lg text-white bg-violet-600 hover:bg-violet-700 mr-4">Assign to me</button>
-            <button @click="removeTask(index)"
-                    class="text-sm px-4 py-1 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600">Remove</button>
-
-        </li>
+        <TaskItem
+            v-for="(task, index) in store.state.Tasks.list" :key="index"
+            :task="task"
+        />
     </ul>
 </template>

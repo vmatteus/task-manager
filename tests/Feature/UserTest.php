@@ -13,10 +13,9 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->make([
+        $this->user = User::factory()->create([
             'email' => 'testefind@gmail.com'
         ]);
-        $this->user->save();
     }
 
     public function test_create_a_task_new(): void

@@ -17,8 +17,7 @@ class UserServiceTest extends TestCase
     {
         parent::setUp();
         $this->userService = app(UserService::class);
-        $this->user = User::factory()->make();
-        $this->user->save();
+        $this->user = User::factory()->create();
     }
 
     public function test_create_method(): void

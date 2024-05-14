@@ -13,8 +13,7 @@ class TaskTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->task = Task::factory()->make();
-        $this->task->save();
+        $this->task = Task::factory()->create();
     }
 
     public function test_the_list_route(): void
