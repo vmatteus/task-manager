@@ -10,6 +10,6 @@
 </head>
 <body class="bg-gray-100">
 <div id="app"></div>
-@vite('resources/js/app.js')
+@vite('resources/js/main.js')
 </body>
 </html>

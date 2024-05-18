@@ -2,8 +2,8 @@
 
     import { onMounted } from 'vue';
     import { useStore } from 'vuex';
-    import TaskAdd from '../components/TaskAdd.vue';
-    import TaskItem from '../components/TaskItem.vue';
+    import TaskAdd from './TaskAdd.vue';
+    import TaskItem from './TaskItem.vue';
 
     const store = useStore()
 
