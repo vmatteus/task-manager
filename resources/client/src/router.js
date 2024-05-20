@@ -6,7 +6,7 @@ import Login from './pages/login/views/login.vue'
 const routes = [
     { path: '/', redirect: '/login'},
     { path: '/task', component: Task },
-    { path: '/user', component: User },
+    { path: '/register', component: User },
     { path: '/login', component: Login },
 ];
 

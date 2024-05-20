@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { utils } from '../../../utils';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default {
     create: async ({ dispatch }, task) => {

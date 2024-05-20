@@ -2,6 +2,9 @@
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import { ref } from 'vue';
+import { useStore } from 'vuex'
+
+const store = useStore();
 
 const email = ref('');
 const password = ref('');
@@ -25,7 +28,7 @@ const password = ref('');
                             type="email"
                             autocomplete="email"
                             required
-                            class="block w-full rounded-md border-0 p py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            class="pl-2 block w-full rounded-md border-0 p py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                     </div>
                 </div>
@@ -46,7 +49,8 @@ const password = ref('');
                             type="password"
                             autocomplete="current-password"
                             required
-                            inputClass="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            class="w-full"
+                            inputClass="pl-2 pr-8 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                     </div>
                 </div>

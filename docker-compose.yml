@@ -6,6 +6,7 @@ services:
             args:
                 WWWGROUP: '${WWWGROUP}'
         image: sail-8.3/app
+        #command: bash -c "npm install && npm run dev && php-fpm"
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
