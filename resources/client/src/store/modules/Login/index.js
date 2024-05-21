@@ -4,7 +4,13 @@ import getters from './getters'
 
 export default {
     namespaced: true,
-    state: {},
+    state: {
+        user: {
+            id: null,
+            name: null,
+            email: null,
+        },
+    },
     getters,
     actions,
     mutations,

@@ -30,7 +30,7 @@ class UserController extends Controller
      * @param FindOrCreateRequest $request
      * @return ApiErrorResponse|ApiResponse
      */
-    public function findOrCreateUser(FindOrCreateRequest $request)
+    public function findOrCreateUser(FindOrCreateRequest $request): ApiErrorResponse|ApiResponse
     {
         try {
             $data = $this->userService->findOrCreate($request->validated());
