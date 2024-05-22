@@ -7,11 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 
-Route::get('login', function () {
-    return new ApiErrorResponse(
-        'User not authenticated.',
-        HttpCode::UNAUTHORIZED
-    );
+Route::get('error-login', function () {
+   return redirect('/login');
 })->name('login');
 
 Route::group(['prefix' => 'api'], function () {
